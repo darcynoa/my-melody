@@ -41,6 +41,7 @@ def download_audio(url, output_path="public/music"):
     ydl_opts = {
         'format': 'bestaudio/best',
         'progress_hooks': [my_progress_hook],
+        'nooverwrites': True,
         'postprocessors': [{
             'key': 'FFmpegExtractAudio',
             'preferredcodec': 'mp3',
@@ -57,6 +58,24 @@ def download_audio(url, output_path="public/music"):
 
     try:
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+            # 1. Extract info without downloading to check filename
+            info = ydl.extract_info(url, download=False)
+            filename = ydl.prepare_filename(info)
+            
+            # 2. Check if the MP3 version already exists
+            # We replace the extension because yt-dlp checks for the intermediate video file
+            expected_mp3 = filename.rsplit('.', 1)[0] + '.mp3'
+            
+            if os.path.exists(expected_mp3):
+                print(json.dumps({
+                    "status": "already_exists",
+                    "message": "Track already in library",
+                    "filename": expected_mp3
+                }))
+                sys.stdout.flush()
+                return
+
+            # 3. If it doesn't exist, proceed with download
             ydl.download([url])
         return True
     except Exception as e:
