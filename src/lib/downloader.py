@@ -83,19 +83,7 @@ def download_audio(url, output_path="public/music"):
         return False
 
 if __name__ == "__main__":
-    print("--- My Melody: CLI Test Mode ---")
-    
-    # Get the URL from the user
-    target_url = input("Paste a YouTube (Music) URL: ").strip()
-    
-    if target_url:
-        print(f"\nInitiating download for: {target_url}\n")
-        download_audio(target_url)
-        print("\n--- Process Finished ---")
-    else:
-        print("No URL entered. Exiting.")
-
-
-
-# test url: https://music.youtube.com/watch?v=Mnl60DoIMk4&si=xwDtlgneDc0fvTFd
-# test error url: https://music.youtube.com/watch?v=thisdoesntwork&si=xwDtlgneDc0f
+    import sys
+    # sys.argv[0] is the script name, sys.argv[1] is the URL
+    if len(sys.argv) > 1:
+        download_audio(sys.argv[1])
