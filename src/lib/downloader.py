@@ -79,3 +79,4 @@ if __name__ == "__main__":
 
 
 # test url: https://music.youtube.com/watch?v=Mnl60DoIMk4&si=xwDtlgneDc0fvTFd
+# test error url: https://music.youtube.com/watch?v=thisdoesntwork&si=xwDtlgneDc0f
