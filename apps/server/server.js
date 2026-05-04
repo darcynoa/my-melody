@@ -10,11 +10,15 @@ app.get("/download", (req, res) => {
   res.setHeader("Content-Type", "text/event-stream");
   res.setHeader("Cache-Control", "no-cache");
 
-  const pythonProcess = spawn("python3", ["downloader.py", musicUrl]);
+  const pythonProcess = spawn("python.exe", ["downloader.py", musicUrl]);
 
   pythonProcess.stdout.on("data", (data) => {
     // Send data directly to the stream
     res.write(`data: ${data.toString()}\n\n`);
+  });
+
+  pythonProcess.stderr.on("data", (data) => {
+    console.error(`Python Error: ${data}`);
   });
 
   pythonProcess.on("close", () => res.end());
